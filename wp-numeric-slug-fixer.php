@@ -3,7 +3,7 @@
  * Plugin Name:       WP Numeric Slug Fixer
  * Plugin URI:        https://github.com/mypacecreator/wp-numeric-slug-fixer
  * Description:       Automatically prefixes numeric-only post slugs to prevent misrouting to date archives when the %postname% permalink structure is active.
- * Version:           1.0.0
+ * Version:           1.1.0
  * Author:            mypacecreator
  * Author URI:        https://github.com/mypacecreator
  * License:           GPL-2.0-or-later
@@ -68,3 +68,7 @@ function wpnsf_fix_numeric_slug( array $data, array $postarr ): array {
 	return $data;
 }
 add_filter( 'wp_insert_post_data', 'wpnsf_fix_numeric_slug', 10, 2 );
+
+if ( is_admin() ) {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/admin-tools-page.php';
+}

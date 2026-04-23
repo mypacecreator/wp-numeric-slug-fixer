@@ -4,7 +4,7 @@ Tags: slug, permalink, numeric, redirect, url
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,7 +59,7 @@ WordPress registers rewrite rules that map numeric URL segments to date-based ar
 
 = Will this affect existing posts that already have numeric slugs? =
 
-No. The fix only applies when a post is saved. If a post was created with a numeric slug before the plugin was activated, it will keep that slug until it is re-saved (e.g. by opening it in the editor and clicking **Update**).
+Not automatically. The filter only runs when a post is saved. If a post was created with a numeric slug before the plugin was activated, it will keep that slug until it is re-saved. To fix all such posts at once, go to **Tools > Fix Numeric Slugs** and click **Fix All**.
 
 = Can I use a prefix other than "post-"? =
 
@@ -77,10 +77,16 @@ No. There is no stored configuration and nothing to clean up after uninstallatio
 
 == Changelog ==
 
+= 1.1.0 =
+* New: Tools > Fix Numeric Slugs page to bulk-fix posts that were saved with numeric-only slugs before the plugin was activated.
+
 = 1.0.0 =
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+No database changes. Visit Tools > Fix Numeric Slugs after upgrading to retroactively fix posts saved before the plugin was installed.
 
 = 1.0.0 =
 Initial release — no upgrade steps required.
