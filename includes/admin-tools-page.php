@@ -109,19 +109,20 @@ function wpnsf_render_tools_page(): void {
 		return;
 	}
 
-	$result = null;
+	$permalink_ok = false !== strpos( (string) get_option( 'permalink_structure' ), '%postname%' );
+	$result       = null;
 
 	if ( isset( $_POST['wpnsf_fix_all_nonce'] ) ) {
 		check_admin_referer( 'wpnsf_fix_all', 'wpnsf_fix_all_nonce' );
-		$result = wpnsf_process_fix_all();
+		if ( $permalink_ok ) {
+			$result = wpnsf_process_fix_all();
+		}
 	}
 
 	$posts      = wpnsf_get_numeric_slug_posts();
 	$total      = count( $posts );
 	$display    = array_slice( $posts, 0, WPNSF_TABLE_DISPLAY_LIMIT );
 	$overflowed = $total > WPNSF_TABLE_DISPLAY_LIMIT;
-
-	$permalink_ok = false !== strpos( (string) get_option( 'permalink_structure' ), '%postname%' );
 	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Fix Numeric Slugs', 'wp-numeric-slug-fixer' ); ?></h1>
