@@ -24,6 +24,10 @@ WP Numeric Slug Fixer solves this by intercepting the save operation *before* th
 * Applies to all public post types (posts, pages, and custom post types).
 * The prefix is customizable via the `wpnsf_prefix` filter hook for developers.
 
+**Fixing posts saved before the plugin was installed**
+
+If posts were already published with numeric-only slugs before you activated the plugin, go to **Tools > Fix Numeric Slugs** in the WordPress admin. The page lists every affected post and offers a **Fix All** button to prefix all of them in a single step — no manual re-saving required. The operation is idempotent: once all slugs are prefixed the page shows nothing left to fix, and clicking Fix All again has no effect. Administrator access (the `manage_options` capability) is required to use this page.
+
 **Customising the prefix**
 
 Add the following snippet to your theme's `functions.php` or a site-specific plugin:
