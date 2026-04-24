@@ -116,7 +116,7 @@ function wpnsf_process_fix_all(): array {
  */
 function wpnsf_render_tools_page(): void {
 	if ( ! current_user_can( 'manage_options' ) ) {
-		return;
+		wp_die( esc_html__( 'Sorry, you are not allowed to access this page.', 'wp-numeric-slug-fixer' ), 403 );
 	}
 
 	$permalink_ok = false !== strpos( (string) get_option( 'permalink_structure' ), '%postname%' );

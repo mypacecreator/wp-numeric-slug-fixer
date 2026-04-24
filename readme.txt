@@ -19,7 +19,7 @@ WP Numeric Slug Fixer solves this by intercepting the save operation *before* th
 **Key characteristics**
 
 * Zero configuration — works out of the box.
-* No database options or admin UI; nothing to clean up on uninstall.
+* No settings page or stored options; nothing to clean up on uninstall. Includes a one-time Tools page for fixing existing numeric slugs.
 * Only activates when the `%postname%` permalink structure is in use; other structures are left untouched.
 * Applies to all public post types (posts, pages, and custom post types).
 * The prefix is customizable via the `wpnsf_prefix` filter hook for developers. Post types that should never have their numeric slugs modified (for example, custom post types used internally) can be excluded via the `wpnsf_excluded_post_types` filter.
