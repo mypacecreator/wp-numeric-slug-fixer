@@ -4,7 +4,7 @@ Tags: slug, permalink, numeric, redirect, url
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.2.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,10 +19,14 @@ WP Numeric Slug Fixer solves this by intercepting the save operation *before* th
 **Key characteristics**
 
 * Zero configuration — works out of the box.
-* No database options or admin UI; nothing to clean up on uninstall.
+* No settings page or stored options; nothing to clean up on uninstall. Includes a one-time Tools page for fixing existing numeric slugs.
 * Only activates when the `%postname%` permalink structure is in use; other structures are left untouched.
 * Applies to all public post types (posts, pages, and custom post types).
-* The prefix is customizable via the `wpnsf_prefix` filter hook for developers.
+* The prefix is customizable via the `wpnsf_prefix` filter hook for developers. Post types that should never have their numeric slugs modified (for example, custom post types used internally) can be excluded via the `wpnsf_excluded_post_types` filter.
+
+**Fixing posts saved before the plugin was installed**
+
+If posts were already published with numeric-only slugs before you activated the plugin, go to **Tools > Fix Numeric Slugs** in the WordPress admin. The page lists every affected post and offers a **Fix All** button to prefix all of them in a single step — no manual re-saving required. The operation is idempotent: once all slugs are prefixed the page shows nothing left to fix, and clicking Fix All again has no effect. Administrator access (the `manage_options` capability) is required to use this page.
 
 **Customising the prefix**
 
@@ -59,7 +63,7 @@ WordPress registers rewrite rules that map numeric URL segments to date-based ar
 
 = Will this affect existing posts that already have numeric slugs? =
 
-No. The fix only applies when a post is saved. If a post was created with a numeric slug before the plugin was activated, it will keep that slug until it is re-saved (e.g. by opening it in the editor and clicking **Update**).
+Not automatically. The filter only runs when a post is saved. If a post was created with a numeric slug before the plugin was activated, it will keep that slug until it is re-saved. To fix all such posts at once, go to **Tools > Fix Numeric Slugs** and click **Fix All**.
 
 = Can I use a prefix other than "post-"? =
 
@@ -77,10 +81,23 @@ No. There is no stored configuration and nothing to clean up after uninstallatio
 
 == Changelog ==
 
+= 1.2.0 =
+* New: `wpnsf_excluded_post_types` filter to exclude specific post types from numeric slug fixing (both on save and in the bulk-fix Tools page).
+* Fix: Navigation menu items (`nav_menu_item`) are now excluded from the save-time filter; they always carry numeric slugs by design and should not be modified.
+
+= 1.1.0 =
+* New: Tools > Fix Numeric Slugs page to bulk-fix posts that were saved with numeric-only slugs before the plugin was activated.
+
 = 1.0.0 =
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+No database changes. Navigation menu items are now correctly excluded from slug fixing. Use the new `wpnsf_excluded_post_types` filter to exclude additional post types if needed.
+
+= 1.1.0 =
+No database changes. Visit Tools > Fix Numeric Slugs after upgrading to retroactively fix posts saved before the plugin was installed.
 
 = 1.0.0 =
 Initial release — no upgrade steps required.
