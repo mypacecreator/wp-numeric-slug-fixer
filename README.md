@@ -45,6 +45,19 @@ add_filter( 'wpnsf_prefix', function() {
 
 プレフィックス変更後は既存の数字スラッグを持つ投稿を再保存する必要がある（フィルターは保存時のみ実行されるため）。
 
+### フィルター: `wpnsf_excluded_post_types`
+
+数字スラッグの修正処理から除外する投稿タイプを指定できる。保存時フィルターと管理画面ツールページの一括修正クエリの両方に適用される。
+
+デフォルトで `revision` と `nav_menu_item` が除外されている。カスタム投稿タイプなどを追加で除外したい場合に使用する。
+
+```php
+add_filter( 'wpnsf_excluded_post_types', function( array $types ): array {
+    $types[] = 'my_internal_type';
+    return $types;
+} );
+```
+
 ## 管理画面ツールページ（1.1.0 追加）
 
 **Tools > Fix Numeric Slugs** に一括修正ページを追加。プラグイン有効化前に数字のみのスラッグで保存された既存投稿を対象とする。

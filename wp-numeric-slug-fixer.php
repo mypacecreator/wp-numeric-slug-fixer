@@ -3,7 +3,7 @@
  * Plugin Name:       WP Numeric Slug Fixer
  * Plugin URI:        https://github.com/mypacecreator/wp-numeric-slug-fixer
  * Description:       Automatically prefixes numeric-only post slugs to prevent misrouting to date archives when the %postname% permalink structure is active.
- * Version:           1.1.0
+ * Version:           1.2.0
  * Author:            mypacecreator
  * Author URI:        https://github.com/mypacecreator
  * License:           GPL-2.0-or-later
@@ -36,8 +36,24 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array Modified post data.
  */
 function wpnsf_fix_numeric_slug( array $data, array $postarr ): array {
-	// Revisions inherit slug handling from their parent; skip them.
-	if ( 'revision' === $data['post_type'] ) {
+	/**
+	 * Filters the post types excluded from numeric slug fixing.
+	 *
+	 * Add custom post type slugs to this array to prevent the plugin from
+	 * prefixing their numeric-only slugs on save.
+	 *
+	 * Example:
+	 * add_filter( 'wpnsf_excluded_post_types', function( $types ) {
+	 *     $types[] = 'my_custom_type';
+	 *     return $types;
+	 * } );
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param string[] $excluded Post type slugs to exclude. Default ['revision', 'nav_menu_item'].
+	 */
+	$excluded = (array) apply_filters( 'wpnsf_excluded_post_types', array( 'revision', 'nav_menu_item' ) );
+	if ( in_array( $data['post_type'], $excluded, true ) ) {
 		return $data;
 	}
 

@@ -37,7 +37,8 @@ function wpnsf_register_tools_page(): void {
 /**
  * Return all posts that currently have a purely numeric slug.
  *
- * Excludes revisions, auto-drafts, and trashed posts.
+ * Excludes post types listed in the wpnsf_excluded_post_types filter,
+ * plus auto-drafts and trashed posts.
  *
  * @since  1.1.0
  * @global wpdb $wpdb
@@ -46,12 +47,21 @@ function wpnsf_register_tools_page(): void {
 function wpnsf_get_numeric_slug_posts(): array {
 	global $wpdb;
 
-	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+	/** This filter is documented in wp-numeric-slug-fixer.php */
+	$excluded = (array) apply_filters( 'wpnsf_excluded_post_types', array( 'revision', 'nav_menu_item' ) );
+
+	$type_clause = '';
+	if ( ! empty( $excluded ) ) {
+		$escaped     = array_map( 'esc_sql', $excluded );
+		$type_clause = "AND post_type NOT IN ('" . implode( "','", $escaped ) . "')";
+	}
+
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared
 	$results = $wpdb->get_results(
 		"SELECT ID, post_name, post_type, post_status
 		   FROM {$wpdb->posts}
 		  WHERE post_name REGEXP '^[0-9]+$'
-		    AND post_type NOT IN ('revision', 'nav_menu_item')
+		    {$type_clause}
 		    AND post_status NOT IN ('auto-draft', 'trash')
 		  ORDER BY ID ASC"
 	);
