@@ -51,7 +51,7 @@ function wpnsf_get_numeric_slug_posts(): array {
 		"SELECT ID, post_name, post_type, post_status
 		   FROM {$wpdb->posts}
 		  WHERE post_name REGEXP '^[0-9]+$'
-		    AND post_type  != 'revision'
+		    AND post_type NOT IN ('revision', 'nav_menu_item')
 		    AND post_status NOT IN ('auto-draft', 'trash')
 		  ORDER BY ID ASC"
 	);
